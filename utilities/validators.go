@@ -3,10 +3,13 @@ package utilities
 import (
 	"encoding/json"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+
+	"the_basics_of_messenger_handler/entities"
 )
 
 func JSONRequisitionParser(sender any, c *gin.Context) ([]byte, error, error) {
@@ -38,5 +41,11 @@ func DotEnvHandler() {
 
 	if emulator == "" {
 		log.Fatal("EMULATOR is not set in .env file")
+	}
+}
+
+func MessageTypeCheck(sender *entities.Sender, c *gin.Context) {
+	if sender.MessageType != "text" && sender.MessageType != "button" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid message type"})
 	}
 }
