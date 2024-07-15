@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"bytes"
 	"net/http"
 
 	"the_basics_of_messenger_handler/entities"
@@ -12,7 +11,7 @@ import (
 
 func SendMessage(c *gin.Context) {
 	sender := entities.Sender{}
-	jsonData, bindError, marshalError := utilities.JSONRequisitionParser(&sender, c)
+	bindError, marshalError := utilities.JSONRequisitionParser(&sender, c)
 	if bindError != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error when binding JSON"})
 		utilities.CreateLogContent(entities.ERROR, "sender.UserId", "PAGE_ID", bindError.Error())
@@ -24,13 +23,25 @@ func SendMessage(c *gin.Context) {
 		return
 	}
 
-	response, err := http.Post("externalAPIURL", "application/json", bytes.NewBuffer(jsonData))
+	utilities.MessageTypeCheck(&sender, c)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error when making a request to the external API"})
-		utilities.CreateLogContent(entities.ERROR, sender.UserId, "PAGE_ID", err.Error())
-		return
+	if sender.MessageType == "text" {
+		response, err := sender.SendText()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error when making a request to the external API"})
+			utilities.CreateLogContent(entities.ERROR, sender.UserId, "PAGE_ID", err.Error())
+			return
+		}
+		c.JSON(response.StatusCode, nil)
 	}
-	defer response.Body.Close()
-	c.JSON(response.StatusCode, nil)
+
+	if sender.MessageType == "button" {
+		response, err := sender.SendButton()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error when making a request to the external API"})
+			utilities.CreateLogContent(entities.ERROR, sender.UserId, "PAGE_ID", err.Error())
+			return
+		}
+		c.JSON(response.StatusCode, nil)
+	}
 }
