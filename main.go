@@ -1,16 +1,23 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
-	"the_basics_of_messenger_handler/utilities"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	utilities.InitializeRoutes()
+	r := gin.Default()
 
-	fmt.Println("Running on port 8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Println("Error starting the server:", err)
-	}
+	r.POST("/send", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
+
+	r.POST("/receive", func(c *gin.Context) {
+		c.String(http.StatusOK, "Hello, World!")
+	})
+
+	r.Run(":8080")
 }
