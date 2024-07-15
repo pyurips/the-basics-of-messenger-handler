@@ -1,27 +1,36 @@
 package utilities
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/gin-gonic/gin"
+
+	"the_basics_of_messenger_handler/handlers"
 )
 
-func InitializeRoutes() {
-	routes := map[string]func(http.ResponseWriter, *http.Request){
-		"/hello": h1Handler,
-		"/":      notFoundHandler,
-	}
-
-	for path, handler := range routes {
-		http.HandleFunc(path, handler)
-	}
+type Route struct {
+	Path    string
+	Method  string
+	Handler gin.HandlerFunc
 }
 
-func h1Handler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprintln(w, "<h1>H1</h1>")
-}
+func InitializeRoutes() *gin.Engine {
+	r := gin.Default()
 
-func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprintln(w, "<h1>Page not found</h1>")
+	routes := []Route{
+		{
+			Path:    "/users",
+			Method:  "GET",
+			Handler: handlers.SendMessage,
+		},
+	}
+
+	for _, route := range routes {
+		if route.Method == "GET" {
+			r.GET(route.Path, route.Handler)
+		}
+		if route.Method == "POST" {
+			r.POST(route.Path, route.Handler)
+		}
+	}
+
+	return r
 }

@@ -1,23 +1,10 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"the_basics_of_messenger_handler/utilities"
 )
 
 func main() {
-	r := gin.Default()
-
-	r.POST("/send", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-
-	r.POST("/receive", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello, World!")
-	})
-
+	r := utilities.InitializeRoutes()
 	r.Run(":8080")
 }
