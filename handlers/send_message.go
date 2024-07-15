@@ -11,8 +11,8 @@ import (
 )
 
 func SendMessage(c *gin.Context) {
-	sender := new(entities.Sender)
-	jsonData, bindError, marshalError := utilities.JSONRequisitionParser(sender, c)
+	sender := entities.Sender{}
+	jsonData, bindError, marshalError := utilities.JSONRequisitionParser(&sender, c)
 	if bindError != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error when binding JSON"})
 		return
