@@ -1,4 +1,4 @@
-package utilities
+package configs
 
 import (
 	"github.com/gin-gonic/gin"
@@ -17,8 +17,8 @@ func InitializeRoutes() *gin.Engine {
 
 	routes := []Route{
 		{
-			Path:    "/users",
-			Method:  "GET",
+			Path:    "/v1/send",
+			Method:  "POST",
 			Handler: handlers.SendMessage,
 		},
 	}
