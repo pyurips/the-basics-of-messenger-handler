@@ -22,7 +22,7 @@ func CreateLogContent(logType string, userId string, pageId string, content stri
 	}
 	defer file.Close()
 
-	logger := log.New(file, fmt.Sprintf("[%s]", logType), log.Ldate|log.Ltime|log.LUTC)
+	logger := log.New(file, fmt.Sprintf("[%s] ", logType), log.Ldate|log.Ltime|log.LUTC)
 	logMessage := fmt.Sprintf("content: %s", content)
 	logger.Println(logMessage)
 }
