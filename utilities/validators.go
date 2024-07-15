@@ -12,18 +12,18 @@ import (
 	"the_basics_of_messenger_handler/entities"
 )
 
-func JSONRequisitionParser(sender any, c *gin.Context) ([]byte, error, error) {
+func JSONRequisitionParser(sender any, c *gin.Context) (error, error) {
 	shouldBindJson := c.ShouldBindJSON(sender)
 	if shouldBindJson != nil {
-		return nil, shouldBindJson, nil
+		return shouldBindJson, nil
 	}
 
-	jsonData, err := json.Marshal(sender)
+	_, err := json.Marshal(sender)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	return jsonData, nil, nil
+	return nil, nil
 }
 
 func DotEnvHandler() {
