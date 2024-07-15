@@ -16,3 +16,14 @@ type Sender struct {
 	MessageType string  `json:"message_type"`
 	Content     Content `json:"content"`
 }
+
+func (s *Sender) SendText(content string) {
+	s.MessageType = "text"
+	s.Content.Text = content
+}
+
+func (s *Sender) SendButton(content string, buttons []Buttons) {
+	s.MessageType = "button"
+	s.Content.Text = content
+	s.Content.Buttons = buttons
+}
