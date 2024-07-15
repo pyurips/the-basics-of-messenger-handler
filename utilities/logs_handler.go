@@ -25,4 +25,6 @@ func CreateLogContent(logType string, userId string, pageId string, content stri
 	logger := log.New(file, fmt.Sprintf("[%s] ", logType), log.Ldate|log.Ltime|log.LUTC)
 	logMessage := fmt.Sprintf("content: %s", content)
 	logger.Println(logMessage)
+	loggerSeparator := log.New(file, "------------------------------------------------------", 0)
+	loggerSeparator.Println()
 }
