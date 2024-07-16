@@ -2,8 +2,8 @@ package utilities
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -44,8 +44,9 @@ func DotEnvHandler() {
 	}
 }
 
-func MessageTypeCheck(sender *entities.Sender, c *gin.Context) {
+func MessageTypeCheck(sender *entities.Sender, c *gin.Context) error {
 	if sender.MessageType != "text" && sender.MessageType != "button" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid message type"})
+		return errors.New("invalid message type")
 	}
+	return nil
 }
