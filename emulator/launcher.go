@@ -19,7 +19,7 @@ func InitializeEmulator() {
 
 	r.POST("/", func(c *gin.Context) {
 		accessToken := c.Query("access_token")
-		recipient := Recipient{}
+		recipient := Payload{}
 		if err := c.ShouldBindJSON(&recipient); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid JSON"})
 			return
@@ -35,7 +35,7 @@ func InitializeEmulator() {
 			return
 		}
 
-		if err := usersCheck(recipient.ID); err != nil {
+		if err := usersCheck(recipient.Recipient.ID); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user"})
 			return
 		}
@@ -129,4 +129,9 @@ type WebhookRequest struct {
 	ID        string      `json:"id"`
 	Time      int64       `json:"time"`
 	Messaging []Messaging `json:"messaging"`
+}
+
+type Payload struct {
+	Recipient Recipient `json:"recipient"`
+	Message   Message   `json:"message"`
 }
