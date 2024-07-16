@@ -7,13 +7,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func main() {
+	utilities.DotEnvHandler()
+	r := initializeRoutes()
+	r.Run(":8080")
+}
+
 type Route struct {
 	Path    string
 	Method  string
 	Handler gin.HandlerFunc
 }
 
-func InitializeRoutes() *gin.Engine {
+func initializeRoutes() *gin.Engine {
 	r := gin.Default()
 
 	routes := []Route{
@@ -34,10 +40,4 @@ func InitializeRoutes() *gin.Engine {
 	}
 
 	return r
-}
-
-func main() {
-	utilities.DotEnvHandler()
-	r := InitializeRoutes()
-	r.Run(":8080")
 }
