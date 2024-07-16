@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+	"the_basics_of_messenger_handler/emulator"
 	"the_basics_of_messenger_handler/handlers"
 	"the_basics_of_messenger_handler/utilities"
 
@@ -10,7 +12,11 @@ import (
 func main() {
 	utilities.DotEnvHandler()
 	r := initializeRoutes()
-	r.Run(":8080")
+	go r.Run(":8080")
+	if os.Getenv("EMULATOR") == "true" {
+		go emulator.InitializeEmulator()
+	}
+	select {}
 }
 
 type Route struct {
