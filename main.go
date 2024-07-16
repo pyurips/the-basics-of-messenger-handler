@@ -24,7 +24,7 @@ func initializeRoutes() *gin.Engine {
 
 	routes := []Route{
 		{
-			Path:    "/v1/send",
+			Path:    "/v1/message",
 			Method:  "POST",
 			Handler: handlers.SendMessage,
 		},
