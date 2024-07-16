@@ -8,9 +8,21 @@
 #### Como rodar o projeto
 Antes de tudo, é necessário ter o Go instalado na sua máquina.
 
-1º ``` git clone git@github.com:pyurips/the-basics-of-messenger-handler.git ```
-2º ``` go mod download ```
-3º ``` go build -o main ``` ou ``` go build -o main.exe ``` caso esteja usando Windows.
+```
+git clone git@github.com:pyurips/the-basics-of-messenger-handler.git  
+```
+
+```
+go mod download
+```
+
+```
+go build -o main
+```
+Ou, caso esteja utilizando Windows:
+```
+go build -o main.exe
+```
 
 #### Informações sobre as variáveis de ambiente
 No projeto, estão configuradas duas variáveis de ambiente: `ACCESS_TOKEN` e `EMULATOR`. Para rodar o projeto com o emulador do servidor TCP, a primeira deve ser configurada como `12345690`. Caso prefira não usar o emulador, o token de acesso deve ser obtido através da Meta API. A segunda variável determina se o sistema será executado com o emulador, podendo ter apenas dois valores: `true` ou `false`.
