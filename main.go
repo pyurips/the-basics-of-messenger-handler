@@ -34,6 +34,11 @@ func initializeRoutes() *gin.Engine {
 			Method:  "POST",
 			Handler: handlers.SendMessage,
 		},
+		{
+			Path:    "/v1/receive",
+			Method:  "POST",
+			Handler: handlers.ReceiveMessage,
+		},
 	}
 
 	for _, route := range routes {
