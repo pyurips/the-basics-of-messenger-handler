@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
-	"os"
+	"the_basics_of_messenger_handler/configs"
 )
 
 type Content struct {
@@ -67,15 +67,8 @@ func (s *Sender) SendText() (*http.Response, error) {
 		},
 	}
 	jsonRequestData, _ := json.Marshal(requestText)
-	endpoint := func() string {
-		emulator := os.Getenv("EMULATOR")
-		accessToken := os.Getenv("ACCESS_TOKEN")
-		if emulator == "true" {
-			return "http://localhost:5000"
-		}
-		return "https://graph.facebook.com/v2.6/me/messages?access_token=" + accessToken
-	}
-	response, err := http.Post(endpoint(), "application/json", bytes.NewBuffer(jsonRequestData))
+	endpoint := configs.GetAPIEndpoint()
+	response, err := http.Post(endpoint, "application/json", bytes.NewBuffer(jsonRequestData))
 	if err != nil {
 		return nil, err
 	}
@@ -100,15 +93,8 @@ func (s *Sender) SendButton() (*http.Response, error) {
 		},
 	}
 	jsonData, _ := json.Marshal(requestButton)
-	endpoint := func() string {
-		emulator := os.Getenv("EMULATOR")
-		accessToken := os.Getenv("ACCESS_TOKEN")
-		if emulator == "true" {
-			return "http://localhost:5000"
-		}
-		return "https://graph.facebook.com/v2.6/me/messages?access_token=" + accessToken
-	}
-	response, err := http.Post(endpoint(), "application/json", bytes.NewBuffer(jsonData))
+	endpoint := configs.GetAPIEndpoint()
+	response, err := http.Post(endpoint, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, err
 	}
