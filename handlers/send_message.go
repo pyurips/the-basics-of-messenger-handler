@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -38,6 +39,8 @@ func SendMessage(c *gin.Context) {
 			return
 		}
 		c.JSON(response.StatusCode, nil)
+		senderJSON, _ := json.Marshal(sender)
+		utilities.CreateLogContent(strconv.Itoa(response.StatusCode), sender.UserId, string(senderJSON))
 	}
 
 	if sender.MessageType == "button" {
@@ -48,5 +51,7 @@ func SendMessage(c *gin.Context) {
 			return
 		}
 		c.JSON(response.StatusCode, nil)
+		senderJSON, _ := json.Marshal(sender)
+		utilities.CreateLogContent(strconv.Itoa(response.StatusCode), sender.UserId, string(senderJSON))
 	}
 }
