@@ -7,13 +7,8 @@ import (
 	"path/filepath"
 )
 
-func CreateLogContent(logType string, userId string, pageId string, content string) {
-	fileName := ""
-	if pageId != "" {
-		fileName = fmt.Sprintf("logs/%s_%s.log", userId, pageId)
-	} else {
-		fileName = fmt.Sprintf("logs/%s.log", userId)
-	}
+func CreateLogContent(logType string, userId string, content string) {
+	fileName := fmt.Sprintf("logs/%s.log", userId)
 
 	os.MkdirAll(filepath.Dir(fileName), 0755)
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
