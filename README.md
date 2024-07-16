@@ -29,3 +29,32 @@ No projeto, estão configuradas duas variáveis de ambiente: `ACCESS_TOKEN` e `E
 
 #### Sobre o registro de logs
 Para cada mensagem enviada (para o emulador ou não) ou respostas de requisições quando o usuário é especificado no corpo,  será criada um diretório `logs` contendo os arquivos `.log`. A nomeação dos arquivos é de acordo com o ID do usuário do Messenger.
+
+#### Exemplos de utilização
+
+> **_OBS:_**  Todos os exemplos abaixo foram feitos usando o emulador (servidor local)
+
+Caso queira enviar uma requisição para um usuário específico em que enviará botões:
+```
+{
+  "user_id": "100",
+  "message_type": "button",
+  "content": {
+    "text": "Hello! Please choose an option:",
+    "buttons": [
+      {
+        "type": "postback",
+        "title": "Option A",
+        "payload": "option_a_payload"
+      },
+      {
+        "type": "web_url",
+        "title": "Visit Website",
+        "payload": "https://www.example.com"
+      }
+    ]
+  }
+}
+```
+
+Caso queira enviar uma resposta a uma mensagem específica de um usuário, é somente realizar uma condição/comparação no handler da rota do webhook `/v1/receive` e executar o método `sender.sendText` ou `sender.sendButton` com sua devida estrutura de dados (struct) configurada.
