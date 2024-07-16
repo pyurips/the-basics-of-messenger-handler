@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"os"
 )
 
 type Content struct {
@@ -66,7 +67,14 @@ func (s *Sender) SendText() (*http.Response, error) {
 		},
 	}
 	jsonRequestData, _ := json.Marshal(requestText)
-	response, err := http.Post("externalAPIURL", "application/json", bytes.NewBuffer(jsonRequestData))
+	accessToken := os.Getenv("ACCESS_TOKEN")
+	var endpoint string
+	if emulator := os.Getenv("EMULATOR"); emulator == "true" {
+		endpoint = "externalAPIEmulator"
+	} else {
+		endpoint = "https://graph.facebook.com/v2.6/me/messages?access_token=" + accessToken
+	}
+	response, err := http.Post(endpoint, "application/json", bytes.NewBuffer(jsonRequestData))
 	if err != nil {
 		return nil, err
 	}
