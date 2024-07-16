@@ -67,14 +67,15 @@ func (s *Sender) SendText() (*http.Response, error) {
 		},
 	}
 	jsonRequestData, _ := json.Marshal(requestText)
-	accessToken := os.Getenv("ACCESS_TOKEN")
-	var endpoint string
-	if emulator := os.Getenv("EMULATOR"); emulator == "true" {
-		endpoint = "externalAPIEmulator"
-	} else {
-		endpoint = "https://graph.facebook.com/v2.6/me/messages?access_token=" + accessToken
+	endpoint := func() string {
+		emulator := os.Getenv("EMULATOR")
+		accessToken := os.Getenv("ACCESS_TOKEN")
+		if emulator == "true" {
+			return "http://localhost:5000"
+		}
+		return "https://graph.facebook.com/v2.6/me/messages?access_token=" + accessToken
 	}
-	response, err := http.Post(endpoint, "application/json", bytes.NewBuffer(jsonRequestData))
+	response, err := http.Post(endpoint(), "application/json", bytes.NewBuffer(jsonRequestData))
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +100,15 @@ func (s *Sender) SendButton() (*http.Response, error) {
 		},
 	}
 	jsonData, _ := json.Marshal(requestButton)
-	response, err := http.Post("externalAPIURL", "application/json", bytes.NewBuffer(jsonData))
+	endpoint := func() string {
+		emulator := os.Getenv("EMULATOR")
+		accessToken := os.Getenv("ACCESS_TOKEN")
+		if emulator == "true" {
+			return "http://localhost:5000"
+		}
+		return "https://graph.facebook.com/v2.6/me/messages?access_token=" + accessToken
+	}
+	response, err := http.Post(endpoint(), "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, err
 	}
