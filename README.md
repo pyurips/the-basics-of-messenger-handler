@@ -27,6 +27,9 @@ go build -o main.exe
 #### Informações sobre as variáveis de ambiente
 No projeto, estão configuradas duas variáveis de ambiente: `ACCESS_TOKEN` e `EMULATOR`. Para rodar o projeto com o emulador do servidor TCP, a primeira deve ser configurada como `12345690`. Caso prefira não usar o emulador, o token de acesso deve ser obtido através da Meta API. A segunda variável determina se o sistema será executado com o emulador, podendo ter apenas dois valores: `true` ou `false`.
 
+> [!NOTE]
+> No emulador, existem somente 4 IDs de usuários disponíveis: 100, 101, 102 e 103
+
 #### Sobre o registro de logs
 Para cada mensagem enviada (para o emulador ou não) ou respostas de requisições quando o usuário é especificado no corpo,  será criada um diretório `logs` contendo os arquivos `.log`. A nomeação dos arquivos é de acordo com o ID do usuário do Messenger.
 
