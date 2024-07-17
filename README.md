@@ -8,12 +8,53 @@
 #### Como rodar o projeto
 Antes de tudo, é necessário ter o Go instalado na sua máquina.
 
-1º ``` git clone git@github.com:pyurips/the-basics-of-messenger-handler.git ```
-2º ``` go mod download ```
-3º ``` go build -o main ``` ou ``` go build -o main.exe ``` caso esteja usando Windows.
+```
+git clone git@github.com:pyurips/the-basics-of-messenger-handler.git  
+```
+
+```
+go mod download
+```
+
+```
+go build -o main
+```
+Ou, caso esteja utilizando Windows:
+```
+go build -o main.exe
+```
 
 #### Informações sobre as variáveis de ambiente
 No projeto, estão configuradas duas variáveis de ambiente: `ACCESS_TOKEN` e `EMULATOR`. Para rodar o projeto com o emulador do servidor TCP, a primeira deve ser configurada como `12345690`. Caso prefira não usar o emulador, o token de acesso deve ser obtido através da Meta API. A segunda variável determina se o sistema será executado com o emulador, podendo ter apenas dois valores: `true` ou `false`.
 
 #### Sobre o registro de logs
 Para cada mensagem enviada (para o emulador ou não) ou respostas de requisições quando o usuário é especificado no corpo,  será criada um diretório `logs` contendo os arquivos `.log`. A nomeação dos arquivos é de acordo com o ID do usuário do Messenger.
+
+#### Exemplos de utilização
+
+> **_OBS:_**  Todos os exemplos abaixo foram feitos usando o emulador (servidor local)
+
+Caso queira enviar uma requisição para um usuário específico em que enviará botões:
+```
+{
+  "user_id": "100",
+  "message_type": "button",
+  "content": {
+    "text": "Hello! Please choose an option:",
+    "buttons": [
+      {
+        "type": "postback",
+        "title": "Option A",
+        "payload": "option_a_payload"
+      },
+      {
+        "type": "web_url",
+        "title": "Visit Website",
+        "payload": "https://www.example.com"
+      }
+    ]
+  }
+}
+```
+
+Caso queira enviar uma resposta a uma mensagem específica de um usuário, é somente realizar uma condição/comparação no handler da rota do webhook `/v1/receive` e executar o método `sender.sendText` ou `sender.sendButton` com sua devida estrutura de dados (struct) configurada.
